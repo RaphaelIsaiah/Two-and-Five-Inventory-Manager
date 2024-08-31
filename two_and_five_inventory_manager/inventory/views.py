@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, InventoryItemForm
 from .models import InventoryItem, Category
+from two_and_five_inventory_manager.settings import LOW_QUANTITY
+from django.contrib import messages
 
 
 class Index(TemplateView):
@@ -17,7 +19,30 @@ class Dashboard(LoginRequiredMixin, View):
             "id"
         )  # gets all the items for this user and orders them by the id.
 
-        return render(request, "inventory/dashboard.html", {"items": items})
+        low_inventory = InventoryItem.objects.filter(
+            user=self.request.user.id, quantity__lte=LOW_QUANTITY
+        )
+
+        # Error Messages that show when inventory count is low
+        if low_inventory.count() > 0:
+            if low_inventory.count() > 1:
+                messages.error(
+                    request, f"{low_inventory.count()} items have low inventory"
+                )
+            else:
+                messages.error(
+                    request, f"{low_inventory.count()} item has low inventory"
+                )
+
+        low_inventory_ids = InventoryItem.objects.filter(
+            user=self.request.user.id, quantity__lte=LOW_QUANTITY
+        ).values_list("id", flat=True)
+
+        return render(
+            request,
+            "inventory/dashboard.html",
+            {"items": items, "low_inventory_ids": low_inventory_ids},
+        )
 
 
 class SignUpView(View):
