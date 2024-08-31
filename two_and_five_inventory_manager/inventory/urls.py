@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path
-from .views import Index, SignUpView, Dashboard
+from .views import Index, SignUpView, Dashboard, AddItem
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", Index.as_view(), name="index"),  # root path
     path("dashboard/", Dashboard.as_view(), name="dashboard"),
+    path("add-item/", AddItem.as_view(), name="add-item"),
     path("signup/", SignUpView.as_view(), name="signup"),
     path(
         "login/",
