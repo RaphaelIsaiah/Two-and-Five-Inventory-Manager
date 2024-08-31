@@ -1,0 +1,21 @@
+{% extends 'inventory/base.html' %}
+<!-- I am assuming that this page is not loading because the logout functionality has not been set yet... I'll continue and come back to this. -->
+{% block content %}
+<div class="row">
+    <div class="col-11 col-md-4 mx-auto mt-5">
+        <h2>You Have Been Logged Out</h2>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <!-- mini form to handle the post request
+                 this form should be with the logout button?
+                -->
+                <!-- <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-link">Log In Again</button>
+                </form> -->
+                <a href="{% url 'login' %}">Log In Again</a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock content %}
