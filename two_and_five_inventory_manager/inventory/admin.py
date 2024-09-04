@@ -3,3 +3,4 @@ from .models import InventoryItem, Category
 
 admin.site.register(InventoryItem)
 admin.site.register(Category)
+admin.site.site_header = "INVENTORY ADMINISTRATION"
