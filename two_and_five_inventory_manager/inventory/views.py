@@ -22,6 +22,7 @@ class Dashboard(LoginRequiredMixin, View):
         low_inventory = InventoryItem.objects.filter(
             user=self.request.user.id, quantity__lte=LOW_QUANTITY
         )
+        # Removing the "user=self.request.user.id" will make all entries made by any user available to all users, but since we want entries unique to each user we leave it there.
 
         # Error Messages that show when inventory count is low
         if low_inventory.count() > 0:
