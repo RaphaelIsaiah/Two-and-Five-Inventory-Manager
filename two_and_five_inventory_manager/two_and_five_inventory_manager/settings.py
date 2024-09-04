@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+# from decouple import config
+from dotenv import load_dotenv
+load_dotenv()
+
+import os
 from pathlib import Path
-from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,8 +31,11 @@ SECRET_KEY = "django-insecure-0df3j1*pl2ei-n_=y@(cs@)vkf1(o%d15vl^14k76p&$-&8jce
 
 # ALLOWED_HOSTS = []
 
-DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
+# DEBUG = config('DEBUG', default=False, cast=bool)
+# ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='').split(',')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
+
 
 # Application definition
 
@@ -82,7 +89,8 @@ WSGI_APPLICATION = "two_and_five_inventory_manager.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -122,7 +130,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
